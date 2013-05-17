@@ -29,6 +29,14 @@ def _init_local_db():
 
 inited = False
 
+class nullpool_SQLAlchemy(SQLAlchemy):
+	def apply_driver_hacks(self, app, info, options):
+		super(nullpool_SQLAlchemy, self).apply_driver_hacks(app, info, options)
+		from sqlalchemy.pool import NullPool
+		options['poolclass'] = NullPool
+		if options.has_key("pool_size"):
+			del options['pool_size']
+
 def init(type):
 	global app
 	global db
@@ -41,6 +49,7 @@ def init(type):
 			_init_sae_db()
 		else:
 			_init_local_db()
+		app.config.setdefault("SQLALCHEMY_POOL_RECYCLE", 10)
 		db = SQLAlchemy(app)
 		db.engine.echo = True
 		import views
