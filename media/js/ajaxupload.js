@@ -27,5 +27,10 @@
 		var url = $(s.form).attr('action');
 		var uploadData = $.extend({}, s.data||{}, data);
 		$.ajax($.extend({url: url}, s, {data: uploadData}));
+	};
+
+	$.fn.ajaxUpload = function(s) {
+		var p = $.extend({form: this}, s);
+		$.ajaxUpload(p);
 	}
 })(jQuery);

@@ -28,7 +28,7 @@ def add_defaults():
 	dep = Department()
 	dep.type = 0
 	dep.name = u"恒达"
-	dep.location = c
+	dep.region = c
 
 	user.loginid = 'admin'
 	user.password = 'admin'

@@ -16,9 +16,6 @@ class Building(db.Model):
 	community = db.relationship("Community", uselist=False, backref="buildings")
 	floor_num = db.Column(db.Integer)
 	cell_num = db.Column(db.Integer)
-	def __init__(self, floor_num=0, cell_num=0 ):
-		self.cell_num = cell_num
-		self.floor_num = floor_num
 
 class Client(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -27,12 +24,13 @@ class Client(db.Model):
 	phone = db.Column(db.String(256))
 	owner_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 	owner = db.relationship("User", uselist=False)
-	
 
 class House(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	building_id = db.Column(db.Integer, db.ForeignKey("building.id"), nullable=False)
 	building = db.relationship("Building", uselist=False, backref="houses")
+	#1,住宅	 2,经济适用房	 3,别墅	 4,写字楼	 5,商铺	 6,两限房
+	type= db.Column(db.Integer, nullable=False)
 	foor = db.Column(db.Integer, nullable=False)
 	cell = db.Column(db.Integer, nullable=False)
 	num = db.Column(db.Integer)

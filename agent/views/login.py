@@ -27,9 +27,14 @@ def login_required(json=False):
 def index():
 	loginid = session.get(LOGINID)
 	um = UserManager()
+	dm = DepartmentManager();
 	user = um.getByLoginId(loginid)
-	company = um.getUserComany(user);
-	return render_template('index.html', user=user, company=company)
+	company = um.getUserComany(user)
+	region = user.department.region
+	cities = dm.getCitiesOfCompany(company)
+
+	return render_template('index.html', \
+		user=user, company=company, region=region, cities=cities)
 
 @app.route('/about')
 def about():

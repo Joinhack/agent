@@ -20,6 +20,7 @@ class Location(db.Model):
 	zip_code = db.Column(db.String(32), nullable=False)
 	nunber = db.Column(db.Integer, nullable=False)
 
+
 class Department(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	#0 Comoany, 1 Department
@@ -42,8 +43,21 @@ class User(db.Model):
 	def __repr__(self):
 		return "loginid:%s, password:%s"(self.loginid, self.password)
 
+class DepartmentManager:
+	def getCitiesOfCompany(self, company):
+		if not company:
+			return None
+		region = company.region
+		while region:
+			#if region is province or city 
+			if region.type <= 2:
+				return region.children
+			region = region.parent
+		return None
+
+
 class UserManager:
-	def save(slef, user):
+	def save(self, user):
 		db.session.add(user)
 		db.session.commit()
 	def getByLoginId(self, loginId):
