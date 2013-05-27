@@ -2,7 +2,7 @@
 import sys
 from flask import send_from_directory
 from agent import app
-import login, filters
+import user, filters, house
 
 
 @app.route('/media/<path:filename>')

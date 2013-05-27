@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from agent import db
 
+#小区
 class Community(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(256), unique=True)
@@ -46,5 +47,6 @@ class House(db.Model):
 	client_id = db.Column(db.Integer, db.ForeignKey("client.id"), nullable=False)
 	client = db.relationship("Client", uselist=False)
 
-
-
+class CommunityManager:
+	def getCommunitiesByRegionId(self, rid):
+		return Community.query.filter(Community.location.region_id==rid).all()

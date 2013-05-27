@@ -332,13 +332,17 @@ ol, ul, li {
 	-moz-user-select: none;  
 	-webkit-user-select: none;  
 	-ms-user-select: none;
+	min-width: 100px;
 }
 
 .select .content {
-	display: inline-block;
 	position: relative;
 	font-weight: bold;
 	line-height: 27px;
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	-o-text-overflow: ellipsis;  
 }
 
 .select .droplist {

@@ -40,6 +40,41 @@ def index():
 def about():
 	return render_template('about.html')
 
+
+@app.route("/region/children/<parent_id>")
+def region_children(parent_id):
+	rmgmt = RegionManager()
+	data = rmgmt.getChildren(parent_id)
+	return jsonify({'code':0, 'data':_toselect(data)})
+
+@app.route("/region/community/<rid>")
+def region_building(rid):
+	rmgmt = RegionManager()
+	data = rmgmt.getChildren(rid)
+	return jsonify({'code':0, 'data':_toselect(data)})
+
+
+def _toselect(datas):
+	rs = []
+	def _cover(data):
+		rs = {}
+		rs["content"] = data.name
+		rs["value"] = data.id
+		return rs
+	for data in datas:
+		rs.append(_cover(data))
+	return rs
+
+@app.route("/section/add", methods=["post"])
+def section_add():
+	area = request.form["area1"]
+	name = request.form["section"]
+	reg = Region(type=3, name=name, parent_id=area)
+	rmgmt = RegionManager()
+	rmgmt.save(reg)
+	data = {'value':reg.id, 'content':reg.name, 'selected':True}
+	return jsonify({'code':0, 'data':data})
+
 @app.route("/login/do", methods=["post"])
 def do_login():
 	loginid = request.form["loginid"]

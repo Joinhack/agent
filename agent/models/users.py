@@ -5,8 +5,8 @@ class Region(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	#1 province, 2 city, 3 area, 4 section
 	type = db.Column(db.Integer, nullable=False)
-	name = db.Column(db.String(128), unique=True)
-	name_py = db.Column(db.String(256), unique=True)
+	name = db.Column(db.String(128))
+	name_py = db.Column(db.String(256))
 	parent_id = db.Column(db.Integer, db.ForeignKey("region.id"))
 	parent = db.relationship("Region", remote_side=[id], backref="children")
 
@@ -42,6 +42,15 @@ class User(db.Model):
 	department = db.relationship("Department", uselist=False)
 	def __repr__(self):
 		return "loginid:%s, password:%s"(self.loginid, self.password)
+
+class RegionManager:
+	def save(self, r):
+		db.session.add(r)
+		db.session.commit()
+	def get(self, id):
+		return Region.query.filter(Region.id==id).first()
+	def getChildren(self, id):
+		return Region.query.filter(Region.parent_id==id).all()
 
 class DepartmentManager:
 	def getCitiesOfCompany(self, company):

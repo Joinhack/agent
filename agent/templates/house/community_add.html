@@ -1,0 +1,24 @@
+<div class='addCommunity' d-title="添加楼盘">
+<form action="/section/add" method='post'>
+<div class='row'>
+<div class='col'>
+<label>区县:</label>
+<div class="select" style="width:100px" v-regex='.+' v-msg="请选择区县" v-type='select' name="area" >
+</div>
+</div>
+
+<div class='col'>
+<label>商圈:</label>
+<div class="select" name="section" v-regex='.+' v-msg="请选择商圈" v-type='select'>
+</div>
+</div>
+</div>
+
+<div class='row'>
+<div class='col'>
+<label>楼盘:</label>
+<input type="text" style='width:250' v-regex='.+' v-msg="请填写楼盘名字"  name="community" />
+</div>
+</div>
+</form>
+</div>

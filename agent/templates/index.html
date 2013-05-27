@@ -18,14 +18,21 @@
 <div class='row'>
 <div class='col'>
 <label>区县:</label>
-<div class="select" name="area" >
+<div class="select region" name="area" >
 </div>
 </div>
 <div class='col'>
 <label>商圈:</label>
-<div class="select" name="section" >
+<div class="select region" name="section" >
 </div>
 </div>
+
+<div class='col'>
+<label>楼盘:</label>
+<div class="select" name="community" >
+</div>
+</div>
+
 </div>
 </div>
 <div class="t-r"></div>
@@ -33,31 +40,32 @@
 </div>
 </div>
 
-<div>
+<div class='dls'>
 <div class='addSection' d-title="添加商圈">
-<form action="/section/add">
+<form action="/section/add" method='post'>
 <div class='row'>
 <div class='col'>
 <label>区县:</label>
-<div class="select" v-regex='.+' v-msg="请选择区县" v-type='select' name="area1" >
+<div class="select" style="width:100px" v-regex='.+' v-msg="请选择区县" v-type='select' name="area1" >
 </div>
 </div>
 
 <div class='col'>
 <label>商圈:</label>
-<input name="section" v-regex='.+' v-msg="请填写商圈"  style="width:150" type="text"/>
+<input name="section" v-regex='.+' v-msg="请填写商圈"  style="width:120" type="text"/>
 </div>
-
 </div>
 </form>
 </div>
+
+
 </div>
 <script type="text/javascript">
 (function($){
 $(document).ready(function(){
-var area = {{cities|to_selectjson({"content":"name", "value":"id", 'selected':region.id})}};
-$('.select[name="area"]').data("data", function(){return area});
-$('.select[name="area1"]').data("data", function(){return area});
+var area = {{cities|to_selectjson(("name", "id"))}};
+$('.select[name="area"]').data("data", area);
+$('.select[name="area1"]').data("data", area);
 });
 
 })(jQuery);

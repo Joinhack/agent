@@ -12,10 +12,10 @@ def to_selectjson(datas, format):
 		l  = len(format)
 		if l < 2:
 			raise Exception("error format")
-		content = format.get(0)
-		value = format.get(1)
+		content = format[0]
+		value = format[1]
 		if l > 2:
-			selected = format.get(2)
+			selected = format[2]
 
 	if type(format) == types.DictType:
 		content = format.get("content")

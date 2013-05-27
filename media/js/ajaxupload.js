@@ -24,12 +24,16 @@
 		$('select option:selected').each(function(){
 			addVal(data, $(this).parent().attr('name'), $(this).val());
 		});
+		if(!s.type && $(s.form).attr('method'))
+			s.type = $(s.form).attr('method');
 		var url = $(s.form).attr('action');
 		var uploadData = $.extend({}, s.data||{}, data);
 		$.ajax($.extend({url: url}, s, {data: uploadData}));
 	};
 
 	$.fn.ajaxUpload = function(s) {
+		if(!$(this).is('div'))
+			throw "this is not form";
 		var p = $.extend({form: this}, s);
 		$.ajaxUpload(p);
 	}
