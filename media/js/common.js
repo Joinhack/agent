@@ -50,11 +50,13 @@ select.prototype = $.extend({
 		this.opened = false;
 	},
 	'prepare': function() {
+		this.container_a = $("<a class='wrapper' href='javascript:;'></a>");
 		this.selectdom = $("<div class='menu-button'></div>");
-		$(this.dom).append(this.selectdom);
+		this.container_a.append(this.selectdom);
+		$(this.dom).append(this.container_a);
 		$(this.selectdom).append($("<div class='dropdown'>&nbsp;</div>"));
-		this.droplist = $("<div class='droplist'></div>")
-		this.content = $("<div class='content'>&nbsp;</div>")
+		this.droplist = $("<div class='droplist'></div>");
+		this.content = $("<div class='content'>&nbsp;</div>");
 		this.value = $("<input name='value' type='hidden'/>");
 		if($(this.dom).attr("name"))
 			this.value.attr("name", $(this.dom).attr("name"));
@@ -68,11 +70,11 @@ select.prototype = $.extend({
 		this.content.contents().remove();
 		var oval = this.selected;
 		var nval = d;
+		this.selected = d;
 		if(d) {
 			this.content.attr('title', d.content);
 			this.content.append(d.content);
 			this.val(d.value);
-			this.selected = d;
 		} else {
 			this.content.append("&nbsp;");
 			this.val('');
@@ -239,6 +241,7 @@ dialog.prototype = $.extend({
 			$(opts.dom).append(this.dialog);
 			if(opts.dom.attr('d-title'))
 				this.title.append(opts.dom.attr('d-title'));
+			this.dom = opts.dom;
 		} else
 			$(document).append(this.dialog);
 		
@@ -246,12 +249,10 @@ dialog.prototype = $.extend({
 			this.dialog.width(opts.width);
 		if(opts.height)
 			this.dialog.height(opts.height);
+		var offset = {'left':($('body').width() - this.dialog.width())/2};
 		if(opts.offset)
-			this.dialog.offset(opts.offset);
-		else {
-			var offset = {'left':($('body').width() - this.dialog.width())/2};
-			this.dialog.offset(offset);
-		}
+			$.extend(offset, opts.offset);
+		this.dialog.offset(offset);
 	},
 	'show': function(b) {
 		if(b) {
@@ -268,8 +269,7 @@ dialog.prototype = $.extend({
 		this.clicking = true;
 		try {
 			if(this.opts.ok){
-				if(this.opts.ok.call(this.dom))
-					this.show(false);
+				this.opts.ok.call(this.dom||this);
 			}
 		} finally {
 			this.clicking = false; 
@@ -278,7 +278,7 @@ dialog.prototype = $.extend({
 	'close': function() {
 		this.show(false);
 		if(this.opts.close)
-			this.opts.close.call(this.dom);
+			this.opts.close.call(this.dom||this);
 	},
 	'bindEvent': function() {
 		var that = this;

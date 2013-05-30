@@ -1,0 +1,52 @@
+.addCommunity .dialog {
+	width: 450px;
+}
+
+.select {
+	width: 120px;
+}
+
+.col label {
+	width:75px;
+}
+
+
+.dialog .r3 .col input {
+	width:35px;
+}
+
+.addCommunity input[name=location],input[name=community] {
+	width: 285px;
+}
+
+.addCommunity input[name=number],input[name=zip_code] {
+	width: 100px;
+}
+
+.addCommunity input[name=builder],input[name=complete_time] {
+	width: 100px;
+}
+
+.addSection .dialog {
+	width: 450px;
+}
+
+.select[name=property_free_unit]  {
+	width: 50px;
+}
+
+.select[name=property_free_unit] .droplist {
+	width: 65px;
+}
+
+.select[name=property_free_unit] .droplist .item {
+	padding: 6px 8px 6px 10px
+}
+
+.addCommunity label.c3,input.c3 {
+	width:45px;
+}
+
+.addCommunity input.c2 {
+	width:30px;
+}

@@ -246,16 +246,23 @@ ol, ul, li {
 
 .row .col {
 	display: inline-block;
+	vertical-align: middle;
+	line-height: 27px;
 }
 
-.row .col label {
-	margin-left: 15px;
-	margin-right: 5px;
+.col label {
+	float: left;
+	text-align: right;
+	line-height: 30px;
+	vertical-align: middle;
+	margin-right: 8px;
+	width: 55px;
 }
 
-.row .col input {
+.col input {
 	padding: 5px;
 	font-size: 13px;
+	margin-left: 2px;
 	border: 1px solid #ccc;
 	border-bottom-color: #999;
 	border-right-color: #999;
@@ -279,7 +286,6 @@ ol, ul, li {
 	line-height: 27px;
 	list-style: none;
 	margin: 0 2px;
-	min-width: 46px;
 	outline: none;
 	padding: 0 18px 0 6px;
 	text-align: center;
@@ -332,20 +338,10 @@ ol, ul, li {
 	-moz-user-select: none;  
 	-webkit-user-select: none;  
 	-ms-user-select: none;
-	min-width: 100px;
 }
 
-.select .content {
-	position: relative;
-	font-weight: bold;
-	line-height: 27px;
-	overflow:hidden;
-	white-space:nowrap;
-	text-overflow:ellipsis;
-	-o-text-overflow: ellipsis;  
-}
 
-.select .droplist {
+.droplist {
 	-webkit-border-radius: 0;
 	-moz-border-radius: 0;
 	border-radius: 0;
@@ -367,9 +363,29 @@ ol, ul, li {
 	position: absolute;
 	left: 2px;
 	cursor: pointer;
+	max-height: 400px;
+	overflow-y: auto;
 }
 
-.select .droplist .item {
+.menu-button .content {
+	position: relative;
+	font-weight: bold;
+	line-height: 27px;
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	-o-text-overflow: ellipsis;  
+}
+
+a.wrapper {
+	color: #333;
+	margin: 0px;
+	padding: 0px;
+	text-decoration: none;
+}
+
+
+.droplist .item {
 	position: relative;
 	cursor: pointer;
 	color: #333;
@@ -379,8 +395,8 @@ ol, ul, li {
 	white-space: nowrap;
 }
 
-.select .droplist .item.hover {
-	background: #f8f8f8;
+.droplist .item:hover {
+	background: #eeeeee;
 }
 
 .dialog {
@@ -389,10 +405,10 @@ ol, ul, li {
 	margin: 0 auto;
 	display: none;
 	border: 8px solid #666;
-	border: 8px solid rgba(82, 82, 82, 0.698);
-	-webkit-box-shadow: 3px 6px 8px rgba(0,0,0,0.3);
-	-moz-box-shadow: 3px 6px 8px rgba(0,0,0,0.3);
-	box-shadow: 3px 6px 8px rgba(0,0,0,0.3);
+	border: 8px solid rgba(9, 45, 64, 0.5);
+	-webkit-box-shadow: 3px 6px 8px rgba(255,255,255,0.3);
+	-moz-box-shadow: 3px 6px 8px rgba(255,255,255,0.3);
+	box-shadow: 3px 6px 8px rgba(255,255,255,0.3);
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
@@ -428,9 +444,9 @@ ol, ul, li {
 	width:100%;
 	height:100%;
 	display: none;
-	opacity: 0.6;
+	opacity: 0.5;
 	z-index: 9998;
-	background-color: #e0e0e0;
+	background-color: #000;
 }
 
 .dialogContent {

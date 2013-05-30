@@ -4,27 +4,19 @@ from agent import db
 class Region(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	#1 province, 2 city, 3 area, 4 section
-	type = db.Column(db.Integer, nullable=False)
+	type = db.Column(db.SmallInteger, nullable=False)
 	name = db.Column(db.String(128))
 	name_py = db.Column(db.String(256))
 	parent_id = db.Column(db.Integer, db.ForeignKey("region.id"))
 	parent = db.relationship("Region", remote_side=[id], backref="children")
-
-class Location(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	#0 street, 1 location
-	type = db.Column(db.Integer, nullable=False)
-	name = db.Column(db.String(128), unique=True)
-	region_id = db.Column(db.Integer, db.ForeignKey("region.id"))
-	region = db.relationship("Region", uselist=False)
-	zip_code = db.Column(db.String(32), nullable=False)
-	nunber = db.Column(db.Integer, nullable=False)
+	owner_id = db.Column(db.Integer)
+	owner = db.relationship("User", primaryjoin="Region.owner_id==User.id", uselist=False, foreign_keys="Region.owner_id")
 
 
 class Department(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	#0 Comoany, 1 Department
-	type = db.Column(db.Integer, nullable=False)
+	#0 Company, 1 Department
+	type = db.Column(db.SmallInteger, nullable=False)
 	name = db.Column(db.String(128), unique=True)
 	parent_id = db.Column(db.Integer, db.ForeignKey("department.id"))
 	region_id = db.Column(db.Integer, db.ForeignKey("region.id"))
@@ -80,3 +72,4 @@ class UserManager:
 			if dep.id != dep.parent_id and dep.parent_id != None:
 				dep = dep.parent
 		return None;
+

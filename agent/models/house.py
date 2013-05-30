@@ -1,22 +1,30 @@
 # -*- coding: utf-8 -*-
-from agent import db
+
+from users import *
 
 #小区
 class Community(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	name = db.Column(db.String(256), unique=True)
+	name = db.Column(db.String(256))
 	name_py = db.Column(db.String(256))
 	builder = db.Column(db.String(128))
 	complete_time = db.Column(db.Date)
-	location_id = db.Column(db.Integer, db.ForeignKey("location.id"), nullable=False)
-	location = db.relationship("Location", uselist=False)
-
-class Building(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	community_id = db.Column(db.Integer, db.ForeignKey("community.id"), nullable=False)
-	community = db.relationship("Community", uselist=False, backref="buildings")
-	floor_num = db.Column(db.Integer)
-	cell_num = db.Column(db.Integer)
+	region_id = db.Column(db.Integer, db.ForeignKey("region.id"))
+	region = db.relationship("Region", uselist=False)
+	location = db.Column(db.String(256))
+	#物管费
+	property_free = db.Column(db.SmallInteger)
+	#物管单位
+	property_free_unit = db.Column(db.SmallInteger)
+	#绿化率
+	greening_ratio = db.Column(db.SmallInteger)
+	#容积率
+	plot_ratio = db.Column(db.SmallInteger)
+	#邮编
+	zip_code = db.Column(db.String(32))
+	nunber = db.Column(db.SmallInteger)
+	owner_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+	owner = db.relationship("User", uselist=False)
 
 class Client(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -28,8 +36,8 @@ class Client(db.Model):
 
 class House(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	building_id = db.Column(db.Integer, db.ForeignKey("building.id"), nullable=False)
-	building = db.relationship("Building", uselist=False, backref="houses")
+	community_id = db.Column(db.Integer, db.ForeignKey("community.id"), nullable=False)
+	community = db.relationship("Community", uselist=False, backref="buildings")
 	#1,住宅	 2,经济适用房	 3,别墅	 4,写字楼	 5,商铺	 6,两限房
 	type= db.Column(db.Integer, nullable=False)
 	foor = db.Column(db.Integer, nullable=False)
@@ -49,4 +57,7 @@ class House(db.Model):
 
 class CommunityManager:
 	def getCommunitiesByRegionId(self, rid):
-		return Community.query.filter(Community.location.region_id==rid).all()
+		return Community.query.filter(Community.region_id==rid).all()
+	def save(self, c):
+		db.session.add(c)
+		db.session.commit()

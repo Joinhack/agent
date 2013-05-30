@@ -3,6 +3,7 @@
 {% block exthead %}
 <script type="text/javascript" src='/media/js/common.js'></script>
 <script type="text/javascript" src='/media/js/ajaxupload.js'></script>
+<link rel="stylesheet" type="text/css" href="/media/css/index.css">
 {% endblock exthead %}
 {%block extbody%}
 <div>
@@ -11,7 +12,7 @@
 </div>
 <div class="t-header">
 <div class="t-l"></div>
-<div class="t-m">
+<div class="t-m addHouse">
 <ul class='t-menu'>
 <li></li>
 </ul>
@@ -33,6 +34,12 @@
 </div>
 </div>
 
+<div class='col'>
+<label>栋座:</label>
+<div class="select" name="building" >
+</div>
+</div>
+
 </div>
 </div>
 <div class="t-r"></div>
@@ -46,7 +53,7 @@
 <div class='row'>
 <div class='col'>
 <label>区县:</label>
-<div class="select" style="width:100px" v-regex='.+' v-msg="请选择区县" v-type='select' name="area1" >
+<div class="select" style="width:100px" v-regex='.+' v-msg="请选择区县" v-type='select' name="area" >
 </div>
 </div>
 
@@ -64,8 +71,8 @@
 (function($){
 $(document).ready(function(){
 var area = {{cities|to_selectjson(("name", "id"))}};
-$('.select[name="area"]').data("data", area);
-$('.select[name="area1"]').data("data", area);
+$('.select[name="area"]', '.addHouse').data("data", area);
+$('.select[name="area"]', '.addSection').data("data", area);
 });
 
 })(jQuery);

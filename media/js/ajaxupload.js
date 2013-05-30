@@ -1,4 +1,6 @@
 (function($){
+
+	var defaultOpts = {type:'post', dataType:"json"};
 	$.ajaxUpload = function(s){
 		var data = {};
 		var addVal = function(data, name, val) {
@@ -28,11 +30,12 @@
 			s.type = $(s.form).attr('method');
 		var url = $(s.form).attr('action');
 		var uploadData = $.extend({}, s.data||{}, data);
-		$.ajax($.extend({url: url}, s, {data: uploadData}));
+		var params = $.extend({}, defaultOpts, s);
+		$.ajax($.extend({url: url}, params, {data: uploadData}));
 	};
 
 	$.fn.ajaxUpload = function(s) {
-		if(!$(this).is('div'))
+		if(!$(this).is('form'))
 			throw "this is not form";
 		var p = $.extend({form: this}, s);
 		$.ajaxUpload(p);

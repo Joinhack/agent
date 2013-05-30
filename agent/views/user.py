@@ -4,23 +4,9 @@ from agent import app
 from flask import jsonify,session
 from agent.models import *
 from flask import request, render_template, session, redirect, url_for, send_from_directory
-from functools import wraps
+from utils import *
 import logging, sys, types
 
-LOGINID="@#$!!0@"
-
-def login_required(json=False):
-	def outer(fn):
-		@wraps(fn)
-		def login_check(*args, **kwargs):
-			loginId = session.get(LOGINID)
-			if not loginId:
-				if json:
-					return jsonify({'code':-1, 'msg':'please login'})
-				return redirect(url_for("login"))
-			return fn(*args, **kwargs)
-		return login_check
-	return outer
 
 @app.route('/')
 @login_required()
@@ -45,29 +31,17 @@ def about():
 def region_children(parent_id):
 	rmgmt = RegionManager()
 	data = rmgmt.getChildren(parent_id)
-	return jsonify({'code':0, 'data':_toselect(data)})
+	return jsonify({'code':0, 'data':toselect(data)})
 
 @app.route("/region/community/<rid>")
 def region_building(rid):
 	rmgmt = RegionManager()
 	data = rmgmt.getChildren(rid)
-	return jsonify({'code':0, 'data':_toselect(data)})
-
-
-def _toselect(datas):
-	rs = []
-	def _cover(data):
-		rs = {}
-		rs["content"] = data.name
-		rs["value"] = data.id
-		return rs
-	for data in datas:
-		rs.append(_cover(data))
-	return rs
+	return jsonify({'code':0, 'data':toselect(data)})
 
 @app.route("/section/add", methods=["post"])
 def section_add():
-	area = request.form["area1"]
+	area = request.form["area"]
 	name = request.form["section"]
 	reg = Region(type=3, name=name, parent_id=area)
 	rmgmt = RegionManager()
