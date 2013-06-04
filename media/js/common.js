@@ -176,6 +176,12 @@ select.prototype = $.extend({
 	'reset': function() {
 		this.droplist_open(false);
 	},
+	'focus': function() {
+		$(this.container_a).focus();
+	},
+	'keydown': function() {
+
+	}, 
 	'eventBind': function() {
 		var that = this;
 		$(this.selectdom).click(function(){
@@ -184,6 +190,12 @@ select.prototype = $.extend({
 			return that.dom_mouseover();
 		}).mouseout(function(){
 			return that.dom_mouseout();
+		});
+		$(this.selectdom).click(function(){
+			that.focus();
+		});
+		$(this.container_a).keydown(function(e){
+
 		});
 		$(document).click(function(){
 			that.reset();
@@ -461,5 +473,104 @@ $.validate = function(dom) {
 	return true;
 }
 
+function AutoCompleteEditor(opts) {
+	this._init(opts);
+}
+
+AutoCompleteEditor.prototype = {
+	_init: function (opts) {
+		this.isCompleted = false;
+		this.opts = opts;
+		this.dom = opts.dom;
+		this._prepare();
+		this._initAutoComplete();
+	},
+	_initAutoComplete: function() {
+		var opts = {};
+		var acUrl = $(this.dom).attr("acUrl");
+		var param = null;
+		if(acUrl != null && acUrl != "")
+			param = acUrl;
+		if(this.opts.data != null)
+			param = this.opts.data;
+		else if(this.opts.url != null)
+			param = this.opts.url;
+		if(param == null)
+			throw "please point out autocomplete datasource";
+		var self = this;
+		$(this.dom).autocomplete(param,$.extend(opts, {
+			onItemSelect: function(item) {
+				self.complete(true);
+				self.hideField.val(item.data.id);
+				self.lastCompletedKey = item.value;
+			},
+			beforeUseConverter: function(v) {
+				if(self.lastCompletedKey == v)
+					return v;
+				self.hideField.val("");
+				self.complete(false);
+				return v;
+			},
+			delay: 150,
+			useCache: false,
+			remoteDataType: 'json',
+			filterResults: false
+		}));
+	},
+	_prepare: function() {
+		var parent = $(this.dom).parent();
+		this.editorWrapper = parent;
+		if(!parent.is("div.editorWrapper")) {
+			var editorWrapper = $("<div class='editorWrapper'></div>");
+			$(this.dom).before(editorWrapper);
+			$(this.dom).remove().appendTo(editorWrapper);
+			this.editorWrapper = editorWrapper;
+		}
+		var elem = $(this.dom);
+		if(elem.attr('isCompleted') == 'true')
+			this.complete(true);
+		this._prepareHideField();
+	},
+	_prepareHideField: function() {
+		var elem = $(this.dom);
+		var fieldName = elem.attr('hideField');
+		if(fieldName == null && fieldName == '' )
+			return;
+		this.hideField = $('input[name="' + fieldName + '"]', this.editorWrapper);
+		if(this.hideField.length == 0) {
+			this.hideField = $("<input type='hidden' name='" + fieldName + "'/>").appendTo(this.editorWrapper);
+		}
+		var fieldVal = elem.attr('hideFieldVal');
+		if(fieldVal != null || fieldVal != "")
+			this.hideField.val(fieldVal);
+	},
+	remove: function() {
+		$(this.dom).val("");
+		this.hideField.val("");
+		this.complete(false);
+	},
+	complete: function(b) {
+		if(b == null)
+			return this.isCompleted;
+		if(b) {
+			var remove = $("<label class='remove'></label>");
+			this.editorWrapper.append(remove);
+			var self = this;
+			$(this.dom).addClass("completed");
+			remove.click(function(){
+				self.remove();
+			});
+		} else {
+			var remove = this.editorWrapper.children("label.remove");
+			remove.remove();
+			$(this.dom).removeClass("completed");
+		}
+		this.isCompleted = b;
+	}
+}
+
+$.fn.autoCompleteEditor = function(opts) {
+	return jqCall.call(this, AutoCompleteEditor, arguments);
+}
 
 })(jQuery);

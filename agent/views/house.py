@@ -13,11 +13,23 @@ def community_add():
 @app.route("/community/list/<int:region_id>")
 def community_list(region_id=-1):
 	if region_id < 0:
-		return jsonify({'code':-1, 'msg':'unkonw id'})
+		return jsonify({'code':-1, 'msg':'unkown id'})
 	cmgmt = CommunityManager()
 	data = cmgmt.getCommunitiesByRegionId(region_id)
 	return jsonify({'code':0, 'data':toselect(data)})
 
+@app.route("/community/q")
+@login_required(json=True)
+def community_list_q():
+	q = request.args['q']
+	if not q:
+		return jsonify({'code':-1, 'msg':'unkown query'})
+	loginid = session.get(LOGINID)
+	um = UserManager()
+	user = um.getByLoginId(loginid)
+	cmgmt = CommunityManager()
+	data = cmgmt.queryCommunitiesByUserId(user, q)
+	return jsonify({'code':0, 'data':toselect(data)})
 
 @app.route("/community/add/do", methods=["post"])
 def community_add_do():

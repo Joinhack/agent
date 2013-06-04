@@ -63,7 +63,7 @@ class UserManager:
 		db.session.commit()
 	def getByLoginId(self, loginId):
 		return User.query.filter_by(loginid=loginId).first()
-	def getUserComany(self, user):
+	def getUserCompany(self, user):
 		dep = user.department;
 		while dep:
 			if dep.type == 0:

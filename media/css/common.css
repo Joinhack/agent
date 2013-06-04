@@ -226,7 +226,7 @@ ol, ul, li {
 
 .t .t-r {
 	width: 6px;
-	background: url(../img/t-border.png) -7  bottom no-repeat;
+	background: url(../img/t-border.png) -7px  bottom no-repeat;
 }
 
 .t .t-header {
@@ -240,28 +240,67 @@ ol, ul, li {
 	height: 32px;
 }
 
+.t .t-menu li {
+	height: 32px;
+	float: left;
+}
+
+.t .t-menu li a {
+	width: 116px;
+	height: 32px;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	background: url(../img/t-btn.png) 0 0px no-repeat;
+	vertical-align: middle;
+	line-height: 32px;
+	color: #FFF;
+	font-size: 13px;
+	font-weight: bolder;
+}
+
+.t .t-menu li a.hover {
+	background: url(../img/t-btn.png) 0 -33px no-repeat;
+}
+
+.t .t-menu li a.active {
+	background: url(../img/t-btn.png) 0 -66px no-repeat;
+	font-size: 18px;
+	text-shadow: 1px 0px 1px #000;
+	color:#2d645f;
+}
+
+.t .t-menu li.line {
+	background: url(../img/t-line.gif) 0 3px no-repeat;
+	width: 3px;
+}
+
 .row {
 	margin: 5px;
+	display: inline-block;
 }
 
 .row .col {
 	display: inline-block;
+	float: left;
+	position: relative;
 	vertical-align: middle;
-	line-height: 27px;
 }
 
 .col label {
 	float: left;
 	text-align: right;
-	line-height: 30px;
+	line-height: 28px;
 	vertical-align: middle;
 	margin-right: 8px;
 	width: 55px;
+	margin: auto;
 }
 
 .col input {
 	padding: 5px;
 	font-size: 13px;
+	margin: auto;
 	margin-left: 2px;
 	border: 1px solid #ccc;
 	border-bottom-color: #999;
@@ -285,7 +324,7 @@ ol, ul, li {
 	font-weight: bold;
 	line-height: 27px;
 	list-style: none;
-	margin: 0 2px;
+	margin: 0 0px;
 	outline: none;
 	padding: 0 18px 0 6px;
 	text-align: center;
@@ -361,16 +400,17 @@ ol, ul, li {
 	display: none;
 	padding: 6px 0;
 	position: absolute;
-	left: 2px;
+	left: 0px;
 	cursor: pointer;
 	max-height: 400px;
 	overflow-y: auto;
+	z-index: 999;
 }
 
 .menu-button .content {
 	position: relative;
 	font-weight: bold;
-	line-height: 27px;
+	line-height: 26px;
 	overflow:hidden;
 	white-space:nowrap;
 	text-overflow:ellipsis;
@@ -382,8 +422,9 @@ a.wrapper {
 	margin: 0px;
 	padding: 0px;
 	text-decoration: none;
+	display: block;
+	border: 0;
 }
-
 
 .droplist .item {
 	position: relative;

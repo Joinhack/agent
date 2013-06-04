@@ -18,7 +18,7 @@ var areachange = function(n, target, lastCall) {
 			target.selectlist("dataAppend", data);	
 		}
 		if(lastCall)
-			lastCall();
+			lastCall(target);
 	});
 };
 
@@ -39,11 +39,7 @@ var sectionchange = function(n, target, lastCall) {
 };
 
 
-$('.select[name="area"]', '.addHouse').selectlist("change", function(n){
-	if(!n || !n.value)
-		return;
-	areachange(n, $('.select[name="section"]', '.addHouse'), appendAddSection);
-});
+
 
 var addCommunityOkClick = function() {
 	if(!$.validate($("[v-regex][v-regex!='']", ".addCommunity")))
@@ -65,24 +61,26 @@ var addCommunityOkClick = function() {
 
 var bindAddCommunityEvent = function(content) {
 	
-	content.dialog({ok: addCommunityOkClick, offset:{top:120}});
 	$('.select[name="area"]', content).data('data', $('.select[name="area"]').data('data'));
 	$('.select', content).selectlist();
 
-	$('.select[name=area]', content).selectlist("change", function(n){
+
+	$('.select[name="area"]', content).selectlist("change", function(n){
 		if(!n || !n.value)
 			return;
-		areachange(n, $('.select[name="section"]', content));
+		areachange(n, $('.select[name="section"]', content), function(){appendAddSection(content)});
 	});
-	$('form', content).submit(function(){
-		content.dialog("okclick");
-		return false;
+	$('.save-btn', content).click(function(){
+		addCommunityOkClick();
+	});
+	$('.save-btn', content).submit(function(){
+		
 	});
 	$("[v-regex][v-regex!='']", content).validate();
-	content.dialog("show", true);
+	content.show();
 }
 
-var clickAddCommunity = function() {
+var clickAddCommunity = function(cb) {
 	if($('.addCommunity').length > 0) {
 		$('.addCommunity').dialog("show", true);
 		return;
@@ -94,8 +92,9 @@ var clickAddCommunity = function() {
 			return d;
 		}
 		var content = $(d.content);
-		$('.dls').append(content);
+		$('.t-body').append(content);
 		bindAddCommunityEvent(content);
+		cb();
 	});
 }
 
@@ -118,7 +117,7 @@ var addSectionOkClick = function() {
 			alert(d.msg);
 			return;
 		}
-		$('.select[name=section]', '.addHouse').selectlist("dataPrepend", d.data);
+		$('.select[name=section]', '.addCommunity').selectlist("dataPrepend", d.data);
 		$('input[type=text],input[type=hidden]', '.addSection').val('');
 		$('.select','.addSection').selectlist("select", null);
 		$(that).dialog("show", false);
@@ -136,9 +135,9 @@ $('.addSection').dialog({close:function(){
 	$('input[name=section]', ".addSection").val('');
 }, ok:addSectionOkClick});
 
-var appendAddSection = function(){
-	$('.select[name="section"]', '.addHouse').selectlist("dataAppend", {content:"<div style='color:blue;'>添加商圈</div>", click:function(){
-		var selected = $('.select[name=area]', '.addHouse').selectlist("selected");
+var appendAddSection = function(p){
+	$('.select[name="section"]', p).selectlist("dataAppend", {content:"<div style='color:blue;'>添加商圈</div>", click:function(){
+		var selected = $('.select[name=area]', p).selectlist("selected");
 		if(selected)
 			$('.select[name=area]', '.addSection').selectlist("select", selected);
 		 $('.addSection').dialog("show", true);
@@ -146,6 +145,36 @@ var appendAddSection = function(){
 }
 
 $("[v-regex][v-regex!='']").validate();
+
+$('input[name=community]').autoCompleteEditor({'url':'/community/q'});
+
+$('.t-header .t-menu li a').mouseover(function(){
+	$('.t-header .t-menu li a').removeClass('hover');
+	$(this).addClass('hover');
+}).mouseout(function(){
+	$(this).removeClass('hover');
+}).click(function(){
+	var urls = {
+		'addCommunity' : ''
+	};
+	$('.t-header .t-menu li a').removeClass('active');
+
+	var cls = $(this).attr('bind');
+	var target = $('.' + cls, '.t-body');
+	$('.t-body>div').hide();
+	var that = this;
+	var active = function(){
+		$(that).addClass('active');
+	};
+	if(target.length  > 0) {
+		target.show(true);
+		active();
+		return;
+	}
+	var url = urls[cls];
+	clickAddCommunity(active);
+}); 
+
 });
 
 })(jQuery);

@@ -1,9 +1,11 @@
 {% extends "normal.html" %}
 {% block title %}中介管理系统{% endblock title %}
 {% block exthead %}
+<link rel="stylesheet" type="text/css" href="/media/css/index.css">
+<link rel="stylesheet" type="text/css" href="/media/js/jq-ac/jquery.autocomplete.css">
 <script type="text/javascript" src='/media/js/common.js'></script>
 <script type="text/javascript" src='/media/js/ajaxupload.js'></script>
-<link rel="stylesheet" type="text/css" href="/media/css/index.css">
+<script type="text/javascript" src='/media/js/jq-ac/jquery.autocomplete.min.js'></script>
 {% endblock exthead %}
 {%block extbody%}
 <div>
@@ -12,11 +14,21 @@
 </div>
 <div class="t-header">
 <div class="t-l"></div>
-<div class="t-m addHouse">
+<div class="t-m">
 <ul class='t-menu'>
-<li></li>
+<li><a href='javascript:;' class='active' bind='addHouse' >房源添加</a></li>
+<li class='line'></li>
+<li><a href='javascript:;' bind='addCommunity'>楼盘添加</a></li>
+<li class='line'></li>
 </ul>
+<div class='t-body'>
+<div class='addHouse'>
 <div class='row'>
+<div class='col'>
+<label>楼盘:</label>
+<input name='community' hideField='community_id' type=text />
+</div>
+
 <div class='col'>
 <label>区县:</label>
 <div class="select region" name="area" >
@@ -27,19 +39,13 @@
 <div class="select region" name="section" >
 </div>
 </div>
-
-<div class='col'>
-<label>楼盘:</label>
-<div class="select" name="community" >
-</div>
-</div>
-
 <div class='col'>
 <label>栋座:</label>
 <div class="select" name="building" >
 </div>
 </div>
-
+</div>
+</div>
 </div>
 </div>
 <div class="t-r"></div>

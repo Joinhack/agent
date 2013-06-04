@@ -15,7 +15,7 @@ def index():
 	um = UserManager()
 	dm = DepartmentManager();
 	user = um.getByLoginId(loginid)
-	company = um.getUserComany(user)
+	company = um.getUserCompany(user)
 	region = user.department.region
 	cities = dm.getCitiesOfCompany(company)
 
