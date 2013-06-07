@@ -26,10 +26,10 @@ def _init_sae_db():
 
 def _init_bae_db():
 	from bae.core import const
-	MysqlConf["MYSQL_USER"] = sae.const.MYSQL_USER
-	MysqlConf["MYSQL_PASS"] = sae.const.MYSQL_PASS
-	MysqlConf["MYSQL_HOST"] = sae.const.MYSQL_HOST
-	MysqlConf["MYSQL_PORT"] = sae.const.MYSQL_PORT
+	MysqlConf["MYSQL_USER"] = const.MYSQL_USER
+	MysqlConf["MYSQL_PASS"] = const.MYSQL_PASS
+	MysqlConf["MYSQL_HOST"] = const.MYSQL_HOST
+	MysqlConf["MYSQL_PORT"] = const.MYSQL_PORT
 	MysqlConf["MYSQL_DB"] = "agent"
 	app.config.setdefault("SQLALCHEMY_DATABASE_URI", get_mysql_uri())
 
