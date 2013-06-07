@@ -30,7 +30,7 @@ def _init_bae_db():
 	MysqlConf["MYSQL_PASS"] = const.MYSQL_PASS
 	MysqlConf["MYSQL_HOST"] = const.MYSQL_HOST
 	MysqlConf["MYSQL_PORT"] = const.MYSQL_PORT
-	MysqlConf["MYSQL_DB"] = "agent"
+	MysqlConf["MYSQL_DB"] = "iVRwDyxGQdEyxjJTHIue"
 	app.config.setdefault("SQLALCHEMY_DATABASE_URI", get_mysql_uri())
 
 def _init_local_db():
