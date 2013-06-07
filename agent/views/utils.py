@@ -19,7 +19,7 @@ def login_required(json=False):
 
 def attr_set(n, **kwargs):
 	for k in kwargs:
-		if hasattr(n, k) and (not kwargs[k]):
+		if hasattr(n, k) and  kwargs[k]:
 			setattr(n, k, kwargs[k])
 
 def toselect(datas):

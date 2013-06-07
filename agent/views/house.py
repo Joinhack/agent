@@ -32,6 +32,7 @@ def community_list_q():
 	return jsonify({'code':0, 'data':toselect(data)})
 
 @app.route("/community/add/do", methods=["post"])
+@login_required(json=True)
 def community_add_do():
 	section_id = request.form["section"]
 	community_name = request.form["community"]
@@ -43,10 +44,17 @@ def community_add_do():
 	property_free = request.form["property_free"]
 	plot_ratio = request.form["plot_ratio"]
 	greening_ratio = request.form["greening_ratio"]
+
 	community = Community(name=community_name, location=location)
 	attr_set(community, zip_code=zip_code, number=number, \
 		complete_time=complete_time, builder=builder,\
 		property_free=property_free)
 	cmgmt = CommunityManager()
+	loginid = session.get(LOGINID)
+	um = UserManager()
+	user = um.getByLoginId(loginid)
+	company = um.getUserCompany(user)
+	community.owner = user
+	community.company = company
 	cmgmt.save(community)
 	return jsonify({'code':0, 'data':{'value':community.id, 'content':community.name}})

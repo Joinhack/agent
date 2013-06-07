@@ -24,6 +24,15 @@ def _init_sae_db():
 	MysqlConf["MYSQL_DB"] = sae.const.MYSQL_DB
 	app.config.setdefault("SQLALCHEMY_DATABASE_URI", get_mysql_uri())
 
+def _init_bae_db():
+	from bae.core import const
+	MysqlConf["MYSQL_USER"] = sae.const.MYSQL_USER
+	MysqlConf["MYSQL_PASS"] = sae.const.MYSQL_PASS
+	MysqlConf["MYSQL_HOST"] = sae.const.MYSQL_HOST
+	MysqlConf["MYSQL_PORT"] = sae.const.MYSQL_PORT
+	MysqlConf["MYSQL_DB"] = "agent"
+	app.config.setdefault("SQLALCHEMY_DATABASE_URI", get_mysql_uri())
+
 def _init_local_db():
 	app.config.setdefault("SQLALCHEMY_DATABASE_URI", "sqlite://///Users/joinhack/temp/h.db")
 
@@ -47,9 +56,11 @@ def init(type):
 		app.secret_key = 'xkjhjw153k1x1jhl0h5xzyzi22kjh0xll1k52l5i'
 		if type == 'sae':
 			_init_sae_db()
+		elif type == 'bae':
+			_init_bae_db()
 		else:
 			_init_local_db()
-		app.config.setdefault("SQLALCHEMY_POOL_RECYCLE", 10)
+		app.config.setdefault("SQLALCHEMY_POOL_RECYCLE", 15)
 		db = SQLAlchemy(app)
 		db.engine.echo = True
 		import views

@@ -39,12 +39,17 @@ var sectionchange = function(n, target, lastCall) {
 };
 
 
-
+function dialogMsg(msg) {
+	$('.content', '.globalMsg').contents().remove();
+	$('.content', '.globalMsg').append(msg);
+	$('.globalMsg').dialog('show', true);
+}
 
 var addCommunityOkClick = function() {
 	if(!$.validate($("[v-regex][v-regex!='']", ".addCommunity")))
 		return;
 	var that = this;
+	dialogMsg('信息录入中');
 	$('.addCommunity form').ajaxUpload({success: function(d){
 		if(d.code != 0 || !d.data) {
 			alert(d.msg);
@@ -54,7 +59,7 @@ var addCommunityOkClick = function() {
 		$('.select[name=community]', '.addHouse').selectlist('select', d.data);
 		$('.select', '.addCommunity').selectlist('select', null);
 		$('input[type=text],input[type=hidden]', '.addCommunity').val('');
-		that.dialog('show', false);
+		$('.globalMsg').dialog('fadeOut', 1000);
 	}});
 	return;
 }
@@ -135,6 +140,8 @@ $('.addSection').dialog({close:function(){
 	$('input[name=section]', ".addSection").val('');
 }, ok:addSectionOkClick});
 
+$('.globalMsg').dialog({disableClose:true, disableOk: true});
+
 var appendAddSection = function(p){
 	$('.select[name="section"]', p).selectlist("dataAppend", {content:"<div style='color:blue;'>添加商圈</div>", click:function(){
 		var selected = $('.select[name=area]', p).selectlist("selected");
@@ -146,7 +153,13 @@ var appendAddSection = function(p){
 
 $("[v-regex][v-regex!='']").validate();
 
-$('input[name=community]').autoCompleteEditor({'url':'/community/q'});
+$('input[name=community]').autoCompleteEditor({'url':'/community/q','processData':function(d){
+	var rs = [];
+	$(d.data).each(function(){
+		rs.push({value:this.content, data:this.value});
+	});
+	return rs;
+}});
 
 $('.t-header .t-menu li a').mouseover(function(){
 	$('.t-header .t-menu li a').removeClass('hover');

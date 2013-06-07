@@ -8,11 +8,11 @@ class Community(db.Model):
 	name = db.Column(db.String(256))
 	name_py = db.Column(db.String(256))
 	builder = db.Column(db.String(128))
-	complete_time = db.Column(db.Date)
+	complete_time = db.Column(db.Date, nullable=True)
 	region_id = db.Column(db.Integer, db.ForeignKey("region.id"))
-	company_id = db.Column(db.Integer, db.ForeignKey("region.id"))
-	region = db.relationship("Region", uselist=False, foreign_keys="Community.region_id")
-	company = db.relationship("Region", uselist=False, foreign_keys="Community.company_id")
+	company_id = db.Column(db.Integer, db.ForeignKey("department.id"))
+	region = db.relationship("Region", uselist=False)
+	company = db.relationship("Department", uselist=False)
 	location = db.Column(db.String(256))
 	#物管费
 	property_free = db.Column(db.SmallInteger)
@@ -63,7 +63,7 @@ class CommunityManager:
 	def queryCommunitiesByUserId(self, user, q):
 		um = UserManager()
 		company = um.getUserCompany(user)
-		filter = Community.query.filter(db.or_(Community.region_id==user.department_id, Community.company_id == company.id)).filter(Community.name.like('%'+q+'%'))
+		filter = db.session.query(Community.name, Community.id).filter(db.or_(Community.region_id==user.department_id, Community.company_id == company.id)).filter(Community.name.like('%'+q+'%'))
 		return  filter.limit(20).all()
 	def save(self, c):
 		db.session.add(c)

@@ -108,3 +108,10 @@
 	right: 20px;
 	width: 116px;
 }
+
+.globalMsg .content {
+	font-size: 18px;
+	padding-left: 10px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}

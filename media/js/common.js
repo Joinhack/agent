@@ -231,19 +231,22 @@ dialog.prototype = $.extend({
 	'prepare': function(opts) {
 		this.dialog = $("<div class='dialog'></div>");
 		this.inner = $("<div class='inner'></div>");
-		this.title = $("<div class='title'></div>");
+		this.titleDom = $("<div class='title'></div>");
 		this.bottom = $("<div class='bottom'></div>");
 		this.closeDom = $("<a class='close'></a>");
 
 
 		this.ok = $("<input type='button' class='ok' />");
-		this.bottom.append(this.ok);
+		if(!opts.disableOk)
+			this.bottom.append(this.ok);
 
 		this.content = $("<div class='content'></div>");
 		this.dialog.append(this.inner);
-		this.inner.append(this.title);
+		this.inner.append(this.titleDom);
 
-		this.dialog.append(this.closeDom);
+		if(!opts.disableClose) {
+			this.dialog.append(this.closeDom);
+		}
 		this.inner.append(this.content);
 
 		this.inner.append(this.bottom);
@@ -252,7 +255,7 @@ dialog.prototype = $.extend({
 			this.content.append($(opts.dom).contents());
 			$(opts.dom).append(this.dialog);
 			if(opts.dom.attr('d-title'))
-				this.title.append(opts.dom.attr('d-title'));
+				this.title(opts.dom.attr('d-title'));
 			this.dom = opts.dom;
 		} else
 			$(document).append(this.dialog);
@@ -266,13 +269,19 @@ dialog.prototype = $.extend({
 			$.extend(offset, opts.offset);
 		this.dialog.offset(offset);
 	},
+	'title': function(b) {
+		 this.titleDom.contents().remove();
+		 this.titleDom.append(b);
+	},
 	'show': function(b) {
 		if(b) {
 			this.dialog.show();
 			this.divmask.show();
+			$.disableGlobalScroll(true);
 		} else {
 			this.dialog.hide();
 			this.divmask.hide();
+			$.disableGlobalScroll(false);
 		}
 	},
 	'okclick': function() {
@@ -286,6 +295,14 @@ dialog.prototype = $.extend({
 		} finally {
 			this.clicking = false; 
 		}
+	},
+	'fadeOut': function(s, c) {
+		var that = this;
+		this.dialog.fadeOut(s, function(){
+			if(c && $.isFunction(c))
+				c();
+			that.show(false);
+		});
 	},
 	'close': function() {
 		this.show(false);
@@ -486,7 +503,7 @@ AutoCompleteEditor.prototype = {
 		this._initAutoComplete();
 	},
 	_initAutoComplete: function() {
-		var opts = {};
+		var opts = this.opts || {};
 		var acUrl = $(this.dom).attr("acUrl");
 		var param = null;
 		if(acUrl != null && acUrl != "")
@@ -498,7 +515,7 @@ AutoCompleteEditor.prototype = {
 		if(param == null)
 			throw "please point out autocomplete datasource";
 		var self = this;
-		$(this.dom).autocomplete(param,$.extend(opts, {
+		$(this.dom).autocomplete(param,$.extend({
 			onItemSelect: function(item) {
 				self.complete(true);
 				self.hideField.val(item.data.id);
@@ -512,10 +529,11 @@ AutoCompleteEditor.prototype = {
 				return v;
 			},
 			delay: 150,
+			minChars:1,
 			useCache: false,
 			remoteDataType: 'json',
 			filterResults: false
-		}));
+		},opts));
 	},
 	_prepare: function() {
 		var parent = $(this.dom).parent();
@@ -572,5 +590,17 @@ AutoCompleteEditor.prototype = {
 $.fn.autoCompleteEditor = function(opts) {
 	return jqCall.call(this, AutoCompleteEditor, arguments);
 }
+
+$.disableGlobalScroll = function(mark){
+	var html = $('html'),
+		oldScrollTop = html.scrollTop(); //necessary for Firefox
+	
+	if(mark){
+		html.css({'overflow':'hidden'}).scrollTop(oldScrollTop);
+	} else {
+		html.css({'overflow':'auto'}).scrollTop(oldScrollTop);
+	}
+}
+
 
 })(jQuery);
