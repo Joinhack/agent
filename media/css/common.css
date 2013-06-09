@@ -86,13 +86,13 @@ H1 {
 	color: #fff;
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 	background-color: #5bb75b;
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#62c462), to(#51a351));
-	background-image: -webkit-linear-gradient(top, #62c462, #51a351);
-	background-image: -o-linear-gradient(top, #62c462, #51a351);
-	background-image: linear-gradient(to bottom, #62c462, #51a351);
-	background-image: -moz-linear-gradient(top, #62c462, #51a351);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#88a01f), to(#acc528));
+	background-image: -webkit-linear-gradient(top, #88a01f, #acc528);
+	background-image: -o-linear-gradient(top, #62c462, #acc528);
+	background-image: linear-gradient(to bottom, #88a01f, #acc528);
+	background-image: -moz-linear-gradient(top, #88a01f, #acc528);
 	background-repeat: repeat-x;
-	border-color: #51a351 #51a351 #387038;
+	border-color: #acc528 #acc528 #387038;
 	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 	filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ff62c462', endColorstr='#ff51a351', GradientType=0);
 	filter: progid:dximagetransform.microsoft.gradient(enabled=false);
@@ -107,8 +107,8 @@ H1 {
 	-o-transition:background-position 0.1s linear;
 	transition:background-position 0.1s linear;
 	color:#fff;
-	background-color:#51a351;
-	*background-color:#499249;
+	background-color:#acc528;
+	*background-color:#acc528;
 }
 
 .button:active {
@@ -300,8 +300,11 @@ ol, ul, li {
 	vertical-align: middle;
 }
 
-.col label {
+.row .col>* {
 	float: left;
+}
+
+.col label {
 	text-align: right;
 	line-height: 28px;
 	vertical-align: middle;
@@ -314,7 +317,6 @@ ol, ul, li {
 	padding: 5px;
 	font-size: 13px;
 	margin: auto;
-	margin-left: 2px;
 	border: 1px solid #ccc;
 	border-bottom-color: #999;
 	border-right-color: #999;
@@ -399,6 +401,7 @@ ol, ul, li {
 	line-height: 26px;
 	overflow:hidden;
 	white-space:nowrap;
+	min-height: 26px;
 	text-overflow:ellipsis;
 	-o-text-overflow: ellipsis;  
 }

@@ -6,16 +6,13 @@
 	height: 29px;
 }
 
-.select {
-	width: 120px;
-}
 
 .addCommunity {
 	position: relative;
 }
 
 
-.addCommunity .select {
+.addCommunity .select { 
 	width: 100px;
 }
 
@@ -23,12 +20,12 @@
 	width:35px;
 }
 
-.addCommunity .img-upload {
+.img-upload {
 	float: left;
 	width: 160px;
 }
 
-.addCommunity .img-box {
+.img-box {
 	width: 130px;
 	height: 100px;
 	padding: 3px 6px;
@@ -37,25 +34,29 @@
 	background: url(../img/type_img_box.png);
 }
 
-.addCommunity input {
-	width: 80px;
-	margin: auto;
-	margin-left: 0.5px;
-}
 
-.addCommunity .row .col label {
-	width:55px;
-}
-
-.addCommunity input[name=location],.addCommunity input[name=community] {
+.select { 
 	width: 100px;
 }
 
-.addCommunity input[name=desc] {
+input {
+	width: 80px;
+	margin: auto;
+}
+
+.row .col>label {
+	width:55px;
+}
+
+input[name=location],.addCommunity input[name=community] {
+	width: 100px;
+}
+
+input[name=desc] {
 	width: 430px;
 }
 
-.addCommunity input[name=builder],.addCommunity input[name=complete_time] {
+input[name=builder],.addCommunity input[name=complete_time] {
 	width: 100px;
 }
 
@@ -63,9 +64,6 @@
 	width: 450px;
 }
 
-.select[name=property_free_unit]  {
-	width: 50px;
-}
 
 .select[name=property_free_unit] .droplist {
 	width: 65px;
@@ -73,14 +71,6 @@
 
 .select[name=property_free_unit] .droplist .item {
 	padding: 6px 8px 6px 10px
-}
-
-.addCommunity label.c3,input.c3 {
-	width:45px;
-}
-
-.addCommunity input.c2 {
-	width:30px;
 }
 
 .editorWrapper {
@@ -115,3 +105,29 @@
 	padding-top: 8px;
 	padding-bottom: 8px;
 }
+
+input[name=community] {
+	width: 120px;
+}
+
+input[name=cell],input[name=floor],input[name=num]  {
+	width: 40px;
+}
+
+.row .col>*.c4 {
+	width:55px;
+}
+
+
+.row .col>*.c3 {
+	width:45px;
+}
+
+.row .col>.c2 {
+	width:30px;
+}
+
+.row .col>.c1 {
+	width:10px;
+}
+

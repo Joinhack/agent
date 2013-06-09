@@ -7,6 +7,9 @@
 <div class='col'>
 <label>区县:</label>
 <div class="select" style="width:100px" v-regex='.+' v-msg="请选择区县" v-type='select' name="area" >
+<select>
+{%for c in cities%}<option value={{c.id}}>{{c.name}}</option>{%endfor%}
+</select>
 </div>
 </div>
 
@@ -28,8 +31,9 @@
 </div>
 
 <div class='col'>
-<label class='c3'>容积率:</label>
-<input class='c2' type="text" v-regex='(\d{1,2}|^$)' v-msg="请填写容积率"  name="plot_ratio" />%
+<label>容积率:</label>
+<input class='c2' type="text" v-regex='(\d{1,2}|^$)' v-msg="请填写容积率"  name="plot_ratio" />
+<label class='c1'>%</label>
 </div>
 </div>
 
@@ -55,17 +59,17 @@
 <div class='col'>
 <label>物管费:</label>
 <input class='c3' type="text" v-regex='(\d{1,6}|^$)' v-msg="请填写物管费"  name="property_free" />
+<label class='c1'>元</label>
+<div class='select c3' name="property_free_unit"></div>
 </div>
 
-<div class='col'>
-<div class='select' name="property_free_unit"></div>
-</div>
 </div>
 
 <div class='row'>
 <div class='col'>
-<label class='c3'>绿化率:</label>
-<input  class='c2' type="text" v-regex='(\d{1,2}|^$)' v-msg="请填写绿化率"  name="greening_ratio" />%
+<label>绿化率:</label>
+<input  class='c2' type="text" v-regex='(\d{1,2}|^$)' v-msg="请填写绿化率"  name="greening_ratio" />
+<label class='c1'>%</label>
 </div>
 <div class="col">
 <label>描述:</label>

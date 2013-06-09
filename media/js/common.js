@@ -45,7 +45,8 @@ var jqCall = function(obj, args) {
 select.prototype = $.extend({
 	'init': function() {
 		this.prepare();
-		this.dataPrepare();
+		this._dataPrepare();
+		this._selectDomDataPrepare();
 		this.eventBind();
 		this.opened = false;
 	},
@@ -53,9 +54,11 @@ select.prototype = $.extend({
 		this.container_a = $("<a class='wrapper' href='javascript:;'></a>");
 		this.selectdom = $("<div class='menu-button'></div>");
 		this.container_a.append(this.selectdom);
-		$(this.dom).append(this.container_a);
 		$(this.selectdom).append($("<div class='dropdown'>&nbsp;</div>"));
 		this.droplist = $("<div class='droplist'></div>");
+		this.dlul = $("<ul/>");
+		this.droplist.append(this.dlul);
+		$(this.dom).append(this.container_a);
 		this.content = $("<div class='content'>&nbsp;</div>");
 		this.value = $("<input name='value' type='hidden'/>");
 		if($(this.dom).attr("name"))
@@ -63,14 +66,20 @@ select.prototype = $.extend({
 		$(this.dom).append(this.droplist);
 		$(this.selectdom).prepend(this.content);
 		$(this.selectdom).prepend(this.value);
-		if($(this.dom).data("data"))
-			this.opts.data = $(this.dom).data("data");
+		$('select', this.dom).hide();
+		$('select', this.dom).attr('disabled', 'disabled');
 	},
 	'select': function(d) {
 		this.content.contents().remove();
 		var oval = this.selected;
-		var nval = d;
-		this.selected = d;
+		if(typeof d != 'object') {
+			for(var i = 0; i < $('li', this.dlul).length; i++) {
+				if(String(d) == String($($('li', this.dlul)[i]).data('data').value)) {
+					d = $($('li', this.dlul)[i]).data('data');
+					break;
+				}
+			}
+		}
 		if(d) {
 			this.content.attr('title', d.content);
 			this.content.append(d.content);
@@ -79,6 +88,8 @@ select.prototype = $.extend({
 			this.content.append("&nbsp;");
 			this.val('');
 		}
+		this.selected = d;
+		var nval = d;
 		if(nval != oval)
 			this._change(nval, oval);
 	},
@@ -95,11 +106,24 @@ select.prototype = $.extend({
 			this.call(that.dom, n, o);
 		});
 	},
-	'dataPrepare': function() {
+	'_selectDomDataPrepare': function() {
+		var sel = $('select', this.dom);
+		if(sel.length < 1) 
+			return;
+		var that = this;
+		var toData = function(opt){
+			return {value:$(opt).val(), content:$(opt).html()};
+		};
+		$('option', sel).each(function(){
+			that.dataAppend(toData(this));
+		});
+		this.select($('option[selected]', sel).val());
+	},
+	'_dataPrepare': function() {
 		if(this.opts.selected) {
 			this.select(this.opts.selected);
 		}
-		var data = this.opts.data;
+		var data = $(this.dom).data("data");
 		if(typeof(data) == 'function')
 			data = data();
 		this.dataAppend(data);
@@ -107,7 +131,7 @@ select.prototype = $.extend({
 	'dataAppend': function(data) {
 		var that = this;
 		this._addData(data, function(item){
-			that.droplist.append(item);
+			that.dlul.append(item);
 		});
 	},
 	'_addData': function(data, _cb) {
@@ -116,7 +140,7 @@ select.prototype = $.extend({
 		var that = this;
 		$(data).each(function(){
 			var data = this;
-			var item = $("<div class='item'></div>").append(this.content).data('data',data);
+			var item = $("<li class='item'></li>").append(this.content).data('data',data);
 			if(data.selected)
 				that.select(data);
 			_cb(item);
@@ -137,7 +161,7 @@ select.prototype = $.extend({
 	'dataPrepend': function(data) {
 		var that = this;
 		this._addData(data, function(item){
-			that.droplist.prepend(item);
+			that.dlul.prepend(item);
 		});
 	},
 	'val': function() {
@@ -170,7 +194,7 @@ select.prototype = $.extend({
 		}
 	},
 	clear: function() {
-		this.droplist.contents().remove();
+		this.dlul.children().remove();
 		this.select(null);
 	},
 	'reset': function() {

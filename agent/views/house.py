@@ -7,8 +7,15 @@ from agent.models import *
 from utils import *
 
 @app.route("/community/add")
+@login_required()
 def community_add():
-	return jsonify({'code':0, 'content':render_template("/house/community_add.html")})
+	loginid = session.get(LOGINID)
+	um = UserManager()
+	dm = DepartmentManager();
+	user = um.getByLoginId(loginid)
+	company = um.getUserCompany(user)
+	cities = dm.getCitiesOfCompany(company)
+	return jsonify({'code':0, 'content':render_template("/house/community_add.html", cities=cities)})
 
 @app.route("/community/list/<int:region_id>")
 def community_list(region_id=-1):
